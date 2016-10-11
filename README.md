@@ -63,7 +63,7 @@ A `token` object will attach to koa context.
 #### token {`Object`}
 * collection {[Collection](http://mongodb.github.io/node-mongodb-native/2.2/api/Collection.html)} The collection where tokens saved.
 * create {`GeneratorFunction(payload)`} Generate a token with payload and save it. The payload is an object contains business data.
-* check {`GeneratorFunction()`} Check if current token of the request has revoked, if the token was revoked, `401` will throw.
+* check {`GeneratorFunction()`} Check if current token of the request has revoked, if the token was revoked, `401` will throw when `jwtOptions.passthrough` not set `true` else only set the `this.state.user` to `undefined`.
 * read {`GeneratorFunction()`} Read current token of the request from collection without check.
 * destroy {`GeneratorFunction()`} Revoke current token of the request.
 * list {`GeneratorFunction(query)`} Fetch the list of tokens with the `query` of business payload.

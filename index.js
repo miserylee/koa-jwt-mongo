@@ -42,7 +42,11 @@ module.exports = ({
         const auth = this.state[jwtOptions.key || 'user'];
         if (auth) {
           const token = yield c.findOne({ jti: ObjectId(auth.jti) });
-          if (!token) this.throw(401, 'Token was revoked!');
+          if (!token && !jwtOptions.passthrough) {
+            this.throw(401, 'Token was revoked!');
+          } else if (!token) {
+            this.state[jwtOptions.key || 'user'] = undefined;
+          }
         }
       }.bind(this),
       read: function * () {
@@ -83,7 +87,7 @@ module.exports = ({
   }
 
   return function * (next) {
-    if(enableCheck) {
+    if (enableCheck) {
       next = checkValid.bind(this)(next);
     }
     next = jwtMongo.bind(this)(next);

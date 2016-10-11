@@ -1,10 +1,21 @@
 {
   "name": "koa-jwt-mongo",
-  "version": "0.1.0",
-  "description": "",
+  "version": "0.1.1",
+  "description": "Koa middleware to deal with JSON-web-token in mongodb",
+  "keywords": [
+    "koa",
+    "jwt",
+    "mongo",
+    "mongodb",
+    "session"
+  ],
   "main": "index.js",
   "scripts": {
     "dev": "DEBUG=koa-jwt-mongo node-dev ./Example"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/miserylee/koa-jwt-mongo"
   },
   "author": "Misery Lee <miserylee@foxmail.com>",
   "license": "MIT",
