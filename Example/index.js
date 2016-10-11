@@ -9,7 +9,8 @@ app.use(jwtMongo({
   collection: 'tokens',
   jwtOptions: {
     secret,
-    key: 'auth'
+    key: 'auth',
+    issuer: 'kjm'
   },
   jwtUnless: {
     path: '/token'

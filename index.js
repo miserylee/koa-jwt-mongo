@@ -27,7 +27,8 @@ module.exports = ({
         const jti = new ObjectId;
         payload = Object.assign({
           jti,
-          exp: expires.unix
+          exp: expires.unix,
+          iss: jwtOptions.issuer
         }, payload);
         const result = yield c.insertOne({
           _id: jti,
