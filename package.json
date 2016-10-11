@@ -1,0 +1,22 @@
+{
+  "name": "koa-jwt-mongo",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "DEBUG=koa-jwt-mongo node-dev ./Example"
+  },
+  "author": "Misery Lee <miserylee@foxmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "debug": "^2.2.0",
+    "koa-jwt": "^1.2.0",
+    "mongodb": "^2.2.10",
+    "tlan": "^0.1.2"
+  },
+  "devDependencies": {
+    "koa": "^1.2.4",
+    "node-dev": "^3.1.3",
+    "supertest": "^2.0.0"
+  }
+}
