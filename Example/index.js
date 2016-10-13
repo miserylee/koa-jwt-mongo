@@ -35,16 +35,16 @@ app.use(mount('/', function * () {
 }));
 
 app.use(mount('/token', function * () {
-  this.body = yield this.token.create(this.query);
+  this.body = yield this.Token.create(this.query);
 }));
 
 app.use(mount('/destroyToken', function * () {
-  yield this.token.destroy();
+  yield this.Token.destroy();
   this.status = 204;
 }));
 
 app.use(mount('/tokens', function * () {
-  this.body = yield this.token.list(this.query);
+  this.body = yield this.Token.list(this.query);
 }));
 
 app.on('error', err => console.error(err.message));

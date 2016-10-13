@@ -17,7 +17,7 @@ module.exports = ({
 
   let db;
 
-  const token = function () {
+  const Token = function () {
     const c = db.collection(collection);
     return {
       collection: c,
@@ -78,12 +78,12 @@ module.exports = ({
 
       debug('DB connected!');
     }
-    this.token = token.bind(this)();
+    this.Token = Token.bind(this)();
     yield next;
   }
 
   function * checkValid (next) {
-    yield this.token.check();
+    yield this.Token.check();
     yield next;
   }
 
