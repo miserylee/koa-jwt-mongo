@@ -1,6 +1,6 @@
 {
   "name": "koa-jwt-mongo",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "Koa middleware to deal with JSON-web-token in mongodb",
   "keywords": [
     "koa",
@@ -21,7 +21,7 @@
   "license": "MIT",
   "dependencies": {
     "debug": "^2.2.0",
-    "koa-jwt": "^1.2.0",
+    "koa-jwt": "https://github.com/miserylee/jwt.git",
     "mongodb": "^2.2.10",
     "tlan": "^0.1.2"
   },
