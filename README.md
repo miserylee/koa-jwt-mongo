@@ -67,6 +67,8 @@ A `token` object will attach to koa context.
 * read {`GeneratorFunction()`} Read current token of the request from collection without check.
 * destroy {`GeneratorFunction()`} Revoke current token of the request.
 * list {`GeneratorFunction(query)`} Fetch the list of tokens with the `query` of business payload.
+* setMeta {`GeneratorFunction(meta)`} Set the meta of the token. The meta is an custom object.
+* readMeta {`GeneratorFunction()`} Read meta from current token.
 
 ### Contributing
 - Fork this Repo first

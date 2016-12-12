@@ -35,9 +35,23 @@ module.exports = ({
           jti,
           jwt: jwt.sign(payload, jwtOptions.secret),
           payload,
-          expires
+          expires,
+          meta: {}
         });
         return yield c.findOne({ _id: result.insertedId });
+      },
+      setMeta: function * (meta) {
+        const auth = this.state[jwtOptions.key || 'user'];
+        if (auth) {
+          yield c.findOneAndUpdate({ jti: ObjectId(auth.jti) }, { meta });
+        }
+      }.bind(this),
+      readMeta: function * () {
+        const auth = this.state[jwtOptions.key || 'user'];
+        if (auth) {
+          const token = yield c.findOne({ jti: ObjectId(auth.jti) });
+          return token.meta;
+        }
       },
       check: function * () {
         const auth = this.state[jwtOptions.key || 'user'];
