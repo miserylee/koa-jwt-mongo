@@ -1,6 +1,6 @@
 ## koa-jwt-mongo ![NPM version](https://img.shields.io/npm/v/koa-jwt-mongo.svg?style=flat)
 
-
+# Docs of v2.0 is approaching.
 
 ### Installation
 ```bash

@@ -1,12 +1,17 @@
 const jwtMongo = require('../');
 const app = require('koa')();
 const jwt = require('koa-jwt');
+const Connector = require('xx-mongo-connector');
+
+const connection = new Connector({
+  uri: 'mongodb://localhost/jwt-mongo',
+}).connection;
 
 const secret = 'koa-jwt-mongo';
 
 app.use(jwtMongo({
-  uri: 'mongodb://localhost/jwt-mongo',
-  collection: 'tokens',
+  connection,
+  modelName: 'token',
   jwtOptions: {
     secret,
     key: 'auth',
@@ -16,7 +21,7 @@ app.use(jwtMongo({
     path: '/token'
   },
   jwtExp: '2 seconds'
-}));
+}).middleware);
 
 const mount = function (path, middleware) {
   return function * (next) {
@@ -47,6 +52,11 @@ app.use(mount('/tokens', function * () {
   this.body = yield this.Token.list(this.query);
 }));
 
+app.use(mount('/destroyByUsername', function * () {
+  yield this.Token.destroyMany(this.query);
+  this.status = 204;
+}));
+
 app.on('error', err => console.error(err.message));
 
 const request = require('supertest').agent(app.listen());
@@ -54,7 +64,8 @@ const request = require('supertest').agent(app.listen());
 const delay = delay => new Promise(resolve => setTimeout(resolve, delay));
 
 require('co')(function * () {
-  // Unauthorized with no token
+
+// Unauthorized with no token
   request.get('/').expect(401);
   console.log('Unauthorized with no token');
 
@@ -63,7 +74,7 @@ require('co')(function * () {
   console.log(`Got token payload: ${JSON.stringify(body.payload)}`);
 
   // Request protected resource use token
-  var token = `Bearer ${body.jwt}`;
+  let token = `Bearer ${body.jwt}`;
   var { body } = yield request.get('/').set('Authorization', token);
   console.log(`Got protected resource: ${JSON.stringify(body)}`);
 
@@ -80,7 +91,7 @@ require('co')(function * () {
   console.log(`Got token payload: ${JSON.stringify(body.payload)}`);
 
   // Request protected resource use token
-  var token = `Bearer ${body.jwt}`;
+  token = `Bearer ${body.jwt}`;
   var { body } = yield request.get('/').set('Authorization', token);
   console.log(`Got protected resource: ${JSON.stringify(body)}`);
 
@@ -94,12 +105,21 @@ require('co')(function * () {
 
   // Request more tokens
   var { body } = yield request.get('/token?username=Joker');
-  yield request.get('/token?username=Joker');
-  yield request.get('/token?username=Joker');
+  yield request.get('/token?username=Luna');
+  yield request.get('/token?username=Luna');
   console.log('Invoked 3 tokens');
 
   // List tokens by username
-  var token = `Bearer ${body.jwt}`;
-  var { body } = yield request.get('/tokens?username=Joker').set('Authorization', token);
+  token = `Bearer ${body.jwt}`;
+  var { body } = yield request.get('/tokens?username=Luna').set('Authorization', token);
   console.log(`Got token list: ${body.length} tokens`);
+
+  // Destroy tokens by username
+  var { body } = yield request.get('/destroyByUsername?username=Luna').set('Authorization', token);
+  console.log('Destroyed many tokens');
+
+  // List tokens by username
+  var { body } = yield request.get('/tokens?username=Luna').set('Authorization', token);
+  console.log(`Got token list: ${body.length} tokens`);
+
 }).catch(console.error);
